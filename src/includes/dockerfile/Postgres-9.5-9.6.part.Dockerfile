@@ -1,9 +1,4 @@
-
-##########################################################################
-##                         AUTO-GENERATED FILE                          ##
-##########################################################################
-
-FROM postgres:9.6
+FROM postgres:{{ POSTGRES_VERSION }}
 
 RUN apt-get update --fix-missing && \
     apt-get install -y postgresql-server-dev-$PG_MAJOR wget openssh-server barman-cli
@@ -52,6 +47,15 @@ ENV CONFIGS_ASSIGNMENT_SYMBOL :
                                 #CONFIGS_DELIMITER_SYMBOL and CONFIGS_ASSIGNMENT_SYMBOL are used to parse CONFIGS variable
                                 # if CONFIGS_DELIMITER_SYMBOL=| and CONFIGS_ASSIGNMENT_SYMBOL=>, valid configuration string is var1>val1|var2>val2
 ENV REPMGR_MAJOR 3
+#ENV REPMGR_SCHEMA repmgr_$CLUSTER_NAME
+ENV REPMGR_NODES_TABLE repl_nodes
+ENV REPMGR_NODE_ID_COLUMN id
+ENV REPMGR_NODE_NAME_COLUMN name
+ENV REPMGR_CLUSTER_SHOW_MASTER_PATTERN * master
+ENV REPMGR_SHOW_NODES_TABLE repl_show_nodes
+ENV REPMGR_NODE_ID_PARAM_NAME node
+ENV REPMGR_LOG_LEVEL_PARAM_NAME loglevel
+ENV REPMGR_MASTER_RESPONSE_TIMEOUT_PARAM_NAME master_reponse_timeout
 # ENV CONFIGS "listen_addresses:'*'"
                                     # in format variable1:value1[,variable2:value2[,...]] if CONFIGS_DELIMITER_SYMBOL=, and CONFIGS_ASSIGNMENT_SYMBOL=:
                                     # used for pgpool.conf file
@@ -113,6 +117,3 @@ VOLUME /var/lib/postgresql/data
 USER root
 
 CMD ["/usr/local/bin/cluster/entrypoint.sh"]
-ARG EXTENSIONS="pgosm postgis nominatim"
-COPY ./pgsql/extensions/bin/ /extensions_installer/
-RUN chmod -R +x /extensions_installer/ && bash /extensions_installer/install.sh "$EXTENSIONS"

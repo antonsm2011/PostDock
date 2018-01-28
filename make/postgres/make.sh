@@ -1,7 +1,7 @@
 echo ">>> Making postgres"
 
-FILE_FROM='./src/includes.Dockerfile/Postgres-9.5-9.6.part.Dockerfile'
-FILE_FROM_EXT='./src/includes.Dockerfile/Postgres-extended-9.5-9.6.part.Dockerfile'
+FILE_FROM='./src/includes/dockerfile/Postgres-9.5-9.6.part.Dockerfile'
+FILE_FROM_EXT='./src/includes/dockerfile/Postgres-extended-9.5-9.6.part.Dockerfile'
 for POSTGRES_VERSION in 9.5 9.6; do
     echo ">>> Making v.$POSTGRES_VERSION"
     
